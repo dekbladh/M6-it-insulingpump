@@ -37,17 +37,17 @@ def euler (current_value, delta_value, time):
     return (current_value + delta_value*time)
 
 def projected_value (val1, val2, val3, val4, t = 1000):
-    Isc = [val1]
-    Ip = [val2]
-    Ieff = [val3]
-    G = [val4]
+    Isc_list = [val1]
+    Ip_list = [val2]
+    Ieff_list = [val3]
+    G_list = [val4]
     
     for x in range(t):
-        Isc.append(euler(Isc[-1], isc_delta(Isc[-1], tau1, IDt, Cl), 0.1))
-        Ip.append(euler(Ip[-1], Ip_delta(Ip[-1], tau2, Isc[-1] ), 0.1))
-        Ieff.append(euler(Ieff[-1], Ieff_delta(Ieff[-1], Ieff, S, Ip[-1]), 0.1))
-        G.append(euler(G[-1], G_delta(Gezi, Ieff[-1], G[-1], EGP, Ra), 0.1))
-    return (list1, list2, list3, list4)
+        Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 0.1))
+        Ip_list.append(euler(Ip_list[-1], Ip_delta(Ip_list[-1], tau2, Isc_list[-1] ), 0.1))
+        Ieff_list.append(euler(Ieff_list[-1], Ieff_delta(Ieff_list[-1], Ieff, S, Ip_list[-1]), 0.1))
+        G_list.append(euler(G_list[-1], G_delta(Gezi, Ieff_list[-1], G_list[-1], EGP, Ra), 0.1))
+    return ( Isc_list, Ip_list, Ieff_list, G_list)
    
 result = (projected_value(5,2.3,5,4))
 x = list(range(1001))
