@@ -31,7 +31,10 @@ def G_delta(Gezi, Ieff, G, EGP, Ra):
     return ((-(Gezi+Ieff)*G)+EGP+Ra)
     
 def Ra_delta(Gh, Vg, Taum, T, E):
-    ((Gh/(Vg*(Taum**2))) * T * (E**(-(t/Taum))))
+    ((Gh/(Vg*(Taum**2))) * T * (E**(-(t/Taum)))) 
+    
+def Ra1(t,t_food):
+    if t<t_food:  
     
 def euler (current_value, delta_value, time):
     return (current_value + delta_value*time)
@@ -45,7 +48,7 @@ def projected_value (val1, val2, val3, val4, t = 1000):
     for x in range(t):
         Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 0.1))
         Ip_list.append(euler(Ip_list[-1], Ip_delta(Ip_list[-1], tau2, Isc_list[-1] ), 0.1))
-        Ieff_list.append(euler(Ieff_list[-1], Ieff_delta(Ieff_list[-1], Ieff, S, Ip_list[-1]), 0.1))
+        Ieff_list.append(euler(Ieff_list[-1], Ieff_delta(P, Ieff_list[-1], S, Ip_list[-1]), 0.1))
         G_list.append(euler(G_list[-1], G_delta(Gezi, Ieff_list[-1], G_list[-1], EGP, Ra), 0.1))
     return ( Isc_list, Ip_list, Ieff_list, G_list)
    
