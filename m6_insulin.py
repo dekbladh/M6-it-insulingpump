@@ -43,10 +43,10 @@ def projected_value (val1, val2, val3, val4, t = 1000):
     G = [val4]
     
     for x in range(t):
-        list1.append(euler(Isc[-1], isc_delta(Isc[-1], tau1, IDt, Cl), 0.1))
-        list2.append(euler(Ip[-1], Ip_delta(Ip[-1], tau2, Isc[-1] ), 0.1))
-        list3.append(euler(Ieff[-1], Ieff_delta(Ieff[-1], Ieff, S, Ip[-1]), 0.1))
-        list4.append(euler(G[-1], G_delta(Gezi, Ieff[-1], G[-1], EGP, Ra), 0.1))
+        Isc.append(euler(Isc[-1], isc_delta(Isc[-1], tau1, IDt, Cl), 0.1))
+        Ip.append(euler(Ip[-1], Ip_delta(Ip[-1], tau2, Isc[-1] ), 0.1))
+        Ieff.append(euler(Ieff[-1], Ieff_delta(Ieff[-1], Ieff, S, Ip[-1]), 0.1))
+        G.append(euler(G[-1], G_delta(Gezi, Ieff[-1], G[-1], EGP, Ra), 0.1))
     return (list1, list2, list3, list4)
    
 result = (projected_value(5,2.3,5,4))
