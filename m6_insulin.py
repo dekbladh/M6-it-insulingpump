@@ -36,21 +36,21 @@ def Ra_delta(Gh, Vg, Taum, T, E):
 def euler (current_value, delta_value, time):
     return (current_value + delta_value*time)
 
-def projected_value (val1, val2, val3, val4, t = 100):
-    list1 = [val1]
-    list2 = [val2]
-    list3 = [val3]
-    list4 = [val4]
+def projected_value (val1, val2, val3, val4, t = 1000):
+    Isc = [val1]
+    Ip = [val2]
+    Ieff = [val3]
+    G = [val4]
     
     for x in range(t):
-        list1.append(euler(list1[-1], isc_delta(list1[-1], tau1, IDt, Cl), 1))
-        list2.append(euler(list2[-1], Ip_delta(list2[-1], tau2, list1[-1] ), 1))
-        list3.append(euler(list3[-1], Ieff_delta(list3[-1], Ieff, S, list2[-1]), 1))
-        list4.append(euler(list4[-1], G_delta(Gezi, list3[-1], G, EGP, Ra), 1))
+        list1.append(euler(list1[-1], isc_delta(Isc[-1], tau1, IDt, Cl), 0.1))
+        list2.append(euler(list2[-1], Ip_delta(Ip[-1], tau2, Isc[-1] ), 0.1))
+        list3.append(euler(list3[-1], Ieff_delta(Ieff[-1], Ieff, S, Ip[-1]), 0.1))
+        list4.append(euler(list4[-1], G_delta(Gezi, Ieff[-1], G[-1], EGP, Ra), 0.1))
     return (list1, list2, list3, list4)
    
 result = (projected_value(5,2.3,5,4))
-x = list(range(101))
+x = list(range(1001))
 plt.plot(x,result[0], "r--", x, result[1], "bs", x, result[2], "go", x,result[3],'rs')
 
 """print (result[0])
