@@ -15,7 +15,7 @@ Gezi = 2.20 * 10**-3
 G = 1
 EGP = 1.33
 Ra =0
-Vg = 253
+Vg1 = 253
 E=math.e
 tau_m=47
 
@@ -35,11 +35,10 @@ def Ra_delta(Ch, Vg, Taum, t):
     ((Ch/(Vg*(Taum**2))) * t * (E**(-(t/Taum)))) 
     
 def Ra1(t,t_food=20,food=100):
-    if t<t_food:
+    if t <= t_food:
         return 0
     else: 
-         return 0
-     #Ra_delta(food,Vg,tau1,t-t_food)
+         return Ra_delta(food,Vg1,tau_m,t-t_food)
     
 def euler (current_value, delta_value, time):
     return (current_value + delta_value*time)
