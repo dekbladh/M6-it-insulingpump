@@ -48,7 +48,7 @@ def projected_value (val1, val2, val3, val4, t = 1000):
     Ip_list = [val2]
     Ieff_list = [val3]
     G_list = [val4]
-    ra_list = [0]
+    ra_list = [1.5]
     for x in range(t):
         Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 0.x1))
         Ip_list.append(euler(Ip_list[-1], Ip_delta(Ip_list[-1], tau2, Isc_list[-1] ), 0.1))
