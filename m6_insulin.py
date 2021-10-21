@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import math
 
 Isc = 5
 Ip = 4
@@ -16,7 +16,7 @@ G = 1
 EGP = 1.33
 Ra =0
 Vg = 253
-
+E=math.e
 
 def isc_delta (Isc, tau1, IDt, Cl):
     return (((-1/tau1)*Isc)+((1/tau1)*(IDt/Cl)))
@@ -30,11 +30,14 @@ def Ieff_delta(P, Ieff, S, Ip):
 def G_delta(Gezi, Ieff, G, EGP, Ra):
     return ((-(Gezi+Ieff)*G)+EGP+Ra)
     
-def Ra_delta(Gh, Vg, Taum, T, E):
-    ((Gh/(Vg*(Taum**2))) * T * (E**(-(t/Taum)))) 
+def Ra_delta(Gh, Vg, Taum, t):
+    ((Gh/(Vg*(Taum**2))) * t * (E**(-(t/Taum)))) 
     
-def Ra1(t,t_food):
-    if t<t_food:  
+def Ra1(t,t_food=20,food=100):
+    if t<t_food:
+        return 0
+    else: 
+         return Ra_delta(Gh,food,tau1,t-t_food)
     
 def euler (current_value, delta_value, time):
     return (current_value + delta_value*time)
@@ -44,7 +47,7 @@ def projected_value (val1, val2, val3, val4, t = 1000):
     Ip_list = [val2]
     Ieff_list = [val3]
     G_list = [val4]
-    
+    ra_list = [2]
     for x in range(t):
         Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 0.1))
         Ip_list.append(euler(Ip_list[-1], Ip_delta(Ip_list[-1], tau2, Isc_list[-1] ), 0.1))
@@ -62,7 +65,6 @@ print (result[2])
 print (result[3])"""
 
 plt.show()
-
 
     
 
