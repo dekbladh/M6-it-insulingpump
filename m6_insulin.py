@@ -3,7 +3,7 @@ import math
 
 Isc = 5
 Ip = 4
-tau1 = 49
+tau1 = 49 
 tau2 = 47
 IDt = 1
 Cl = 2010
@@ -17,6 +17,7 @@ EGP = 1.33
 Ra =0
 Vg = 253
 E=math.e
+tau_m=47
 
 def isc_delta (Isc, tau1, IDt, Cl):
     return (((-1/tau1)*Isc)+((1/tau1)*(IDt/Cl)))
@@ -30,14 +31,15 @@ def Ieff_delta(P, Ieff, S, Ip):
 def G_delta(Gezi, Ieff, G, EGP, Ra):
     return ((-(Gezi+Ieff)*G)+EGP+Ra)
     
-def Ra_delta(Gh, Vg, Taum, t):
-    ((Gh/(Vg*(Taum**2))) * t * (E**(-(t/Taum)))) 
+def Ra_delta(Ch, Vg, Taum, t):
+    ((Ch/(Vg*(Taum**2))) * t * (E**(-(t/Taum)))) 
     
 def Ra1(t,t_food=20,food=100):
     if t<t_food:
         return 0
     else: 
-         return Ra_delta(Gh,food,tau1,t-t_food)
+         return 0
+     #Ra_delta(food,Vg,tau1,t-t_food)
     
 def euler (current_value, delta_value, time):
     return (current_value + delta_value*time)
@@ -47,12 +49,13 @@ def projected_value (val1, val2, val3, val4, t = 1000):
     Ip_list = [val2]
     Ieff_list = [val3]
     G_list = [val4]
-    ra_list = [2]
+    ra_list = [0]
     for x in range(t):
-        Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 0.1))
+        Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 0.x1))
         Ip_list.append(euler(Ip_list[-1], Ip_delta(Ip_list[-1], tau2, Isc_list[-1] ), 0.1))
         Ieff_list.append(euler(Ieff_list[-1], Ieff_delta(P, Ieff_list[-1], S, Ip_list[-1]), 0.1))
-        G_list.append(euler(G_list[-1], G_delta(Gezi, Ieff_list[-1], G_list[-1], EGP, Ra), 0.1))
+        G_list.append(euler(G_list[-1], G_delta(Gezi, Ieff_list[-1], G_list[-1], EGP, ra_list[-1]), 0.1))
+        ra_list.append(euler(ra_list[-1], Ra1(x), 0.1))
     return ( Isc_list, Ip_list, Ieff_list, G_list)
    
 result = (projected_value(5,2.3,5,4))
@@ -65,7 +68,6 @@ print (result[2])
 print (result[3])"""
 
 plt.show()
-
     
 
    
