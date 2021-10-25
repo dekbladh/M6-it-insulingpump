@@ -18,6 +18,8 @@ Ra =0
 Vg1 = 253
 E=math.e
 tau_m=47
+time_step = 100
+t_min=60
 
 def isc_delta (Isc, tau1, IDt, Cl):
     return (((-1/tau1)*Isc)+((1/tau1)*(IDt/Cl)))
@@ -32,9 +34,9 @@ def G_delta(Gezi, Ieff, G, EGP, Ra):
     return ((-(Gezi+Ieff)*G)+EGP+Ra)
     
 def Ra_delta(Ch, Vg, Taum, t):
-    ((Ch/(Vg*(Taum**2))) * t * (E**(-(t/Taum)))) 
+    return ((Ch/(Vg*(Taum**2))) * t * (E**(-(t/Taum)))) 
     
-def Ra1(t,t_food=20,food=100):
+def Ra1(t,t_food=0,food=1000):
     if t <= t_food:
         return 0
     else: 
@@ -43,23 +45,30 @@ def Ra1(t,t_food=20,food=100):
 def euler (current_value, delta_value, time):
     return (current_value + delta_value*time)
 
-def projected_value (val1, val2, val3, val4, t = 1000):
+def projected_value (val1, val2, val3, val4, t = t_min, t_step = time_step):
     Isc_list = [val1]
     Ip_list = [val2]
     Ieff_list = [val3]
     G_list = [val4]
     ra_list = [1.5]
-    for x in range(t):
-        Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 0.x1))
-        Ip_list.append(euler(Ip_list[-1], Ip_delta(Ip_list[-1], tau2, Isc_list[-1] ), 0.1))
-        Ieff_list.append(euler(Ieff_list[-1], Ieff_delta(P, Ieff_list[-1], S, Ip_list[-1]), 0.1))
-        G_list.append(euler(G_list[-1], G_delta(Gezi, Ieff_list[-1], G_list[-1], EGP, ra_list[-1]), 0.1))
-        ra_list.append(euler(ra_list[-1], Ra1(x), 0.1))
-    return ( Isc_list, Ip_list, Ieff_list, G_list)
+    for x in range(t*t_step):
+        Isc_list.append(euler(Isc_list[-1], isc_delta(Isc_list[-1], tau1, IDt, Cl), 1/t_step))
+        
+        Ip_list.append(euler(Ip_list[-1], Ip_delta(Ip_list[-1], tau2, Isc_list[-1] ), 1/t_step))
+        
+        Ieff_list.append(euler(Ieff_list[-1], Ieff_delta(P, Ieff_list[-1], S, Ip_list[-1]), 1/t_step))
+        
+        G_list.append(euler(G_list[-1], G_delta(Gezi, Ieff_list[-1], G_list[-1], EGP, ra_list[-1]), 1/t_step))
+        
+        ra_list.append(euler(ra_list[-1], Ra1(x/t_step), 1/t_step))
+        
+    return ( Isc_list, Ip_list, Ieff_list, G_list, ra_list)
    
-result = (projected_value(5,2.3,5,4))
-x = list(range(1001))
-plt.plot(x,result[0], "r--", x, result[1], "bs", x, result[2], "go", x,result[3],'rs')
+result = (projected_value(5,25,0.9,4))
+x=[]
+for i in range(t_min*time_step+1):
+    x.append(i/time_step)
+plt.plot(x,result[0], "r--", x, result[1], "rs", x, result[2], "b*", x,result[3],'gs',x,result[4],'g--')
 
 """print (result[0])
 print (result[1])
@@ -67,6 +76,3 @@ print (result[2])
 print (result[3])"""
 
 plt.show()
-    
-
-   
